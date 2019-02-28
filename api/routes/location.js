@@ -1,18 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var msg = require('../logic/getLocation');
+var handleData = require('../logic/handleData');
+var global = require('../logic/global');
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-    msg(function(response){
-        // Here you have access to your variable
-        console.log(response);
-        res.json(response.locations[0].location_latitude)
+
+router.get('/lat/:lat/lon/:lon', function (req, res, next) {     
+    handleData.getDistance(req.params.lat, req.params.lon, function (response) {
+        // Check if lat and lon being passed
+        //console.log(req.query.lon);
+        res.json(response)
     })
- 
-  
 });
 
+router.get('/*', function (req, res, next) {
+    res.json(global.error_get);
+});
 
 module.exports = router;
