@@ -16,6 +16,11 @@ module.exports = {
                 })
 
             }
+            // Sort it
+            result.sort(function(a, b){
+                return a.distance - b.distance;
+            });
+
             console.log(result);
         })
 
