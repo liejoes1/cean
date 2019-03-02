@@ -10,9 +10,10 @@ module.exports = {
             for (var i = 0; i < response.locations.length; i++) {
                 result.push({
                     name: response.locations[i].location_name,
-                    location: response.locations.length,
+                    location_type: response.locations[i].location_type,
+                    location_address: response.locations[i].location_full_address.location_address,
                     distance: distance(response.locations[i].location_latitude, response.locations[i].location_longitude,
-                        3.05749, 101.68820, 'K')
+                        lat, lon)
                 })
 
             }
@@ -20,15 +21,15 @@ module.exports = {
             result.sort(function(a, b){
                 return a.distance - b.distance;
             });
-
-            console.log(result);
+            console.log(response);
+            return callback(result);
         })
 
-        return callback('awd');
+        
     }
 }
 
-function distance(lat1, lon1, lat2, lon2, unit) {
+function distance(lat1, lon1, lat2, lon2) {
 	if ((lat1 == lat2) && (lon1 == lon2)) {
 		return 0;
 	}
@@ -43,10 +44,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 		}
 		dist = Math.acos(dist);
 		dist = dist * 180/Math.PI;
-        dist = dist * 60 * 1.1515;
-        console.log(dist);
-		if (unit=="K") { dist = dist * 1.609344 }
-		if (unit=="N") { dist = dist * 0.8684 }
-		return dist;
+		return dist * 1.609344 * 60 * 1.1515;
 	}
 }
